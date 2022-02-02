@@ -14,17 +14,29 @@ function ControlledForm() {
     email: "",
     gender: "",
   });
-  const handleOnCange = (e) => {
+  const handleOnChange = (e) => {
     if (e.target.value === "") {
-      setError({...error,[e.target.name]:`${e.target.name} is required`})
+      setError({ ...error, [e.target.name]: `${e.target.name} is required` });
     } else {
-      setError({...error,[e.target.name]:''})
+      setError({ ...error, [e.target.name]: "" });
     }
-  setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    var err = Object.keys(formData).filter((i) => {
+      if (formData[i] === "" && i !== "course") {
+        return i;
+      }
+    });
+    if (err.length >= 1) {
+      console.error("Please fill all Data");
+    } else {
+      console.log(formData);
+    }
+  };
+  const handleReset = () => {
+    setFormData({ firstname: "", lastname: "", email: "", gender: "" });
   };
   return (
     <div>
@@ -36,8 +48,8 @@ function ControlledForm() {
             type="text"
             name="firstname"
             value={formData.firstname}
-            onChange={(e) => handleOnCange(e)}
-          />{' '}
+            onChange={(e) => handleOnChange(e)}
+          />{" "}
           <br />
           <span style={{ color: "red" }}>{error.firstname}</span>
         </div>
@@ -47,8 +59,8 @@ function ControlledForm() {
             type="text"
             name="lastname"
             value={formData.lastname}
-            onChange={(e) => handleOnCange(e)}
-          />{' '}
+            onChange={(e) => handleOnChange(e)}
+          />{" "}
           <br />
           <span style={{ color: "red" }}>{error.lastname}</span>
         </div>
@@ -58,8 +70,8 @@ function ControlledForm() {
             type="text"
             name="email"
             value={formData.email}
-            onChange={(e) => handleOnCange(e)}
-          />{' '}
+            onChange={(e) => handleOnChange(e)}
+          />{" "}
           <br />
           <span style={{ color: "red" }}>{error.email}</span>
         </div>
@@ -69,22 +81,22 @@ function ControlledForm() {
             type="radio"
             name="gender"
             value="male"
-            onChange={(e) => handleOnCange(e)}
+            onChange={(e) => handleOnChange(e)}
           />
           Male
           <input
             type="radio"
             name="gender"
             value="female"
-            onChange={(e) => handleOnCange(e)}
+            onChange={(e) => handleOnChange(e)}
           />
           Female
-        </div>{' '}
-          <br />
-          <span style={{ color: "red" }}>{error.gender}</span>
+        </div>{" "}
+        <br />
+        <span style={{ color: "red" }}>{error.gender}</span>
         <div>
           <label>Courses : </label>
-          <select name="course" onChange={(e) => handleOnCange(e)}>
+          <select name="course" onChange={(e) => handleOnChange(e)}>
             <option>React</option>
             <option>Node</option>
             <option>Java</option>
@@ -92,7 +104,7 @@ function ControlledForm() {
           </select>
         </div>
         <input type="submit" value="Submit" />
-        <input type="reset" value="Reset" />
+        <input type="button" value="Reset" onClick={handleReset} />
       </form>
     </div>
   );
