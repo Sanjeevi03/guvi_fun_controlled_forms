@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 function ControlledForm() {
+  const [state,setState] = useState(false)
+  const [val,setVal] = useState()
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -28,85 +30,109 @@ function ControlledForm() {
       if (formData[i] === "" && i !== "course") {
         return i;
       }
+      return 0;
     });
     if (err.length >= 1) {
+      setState(true)
       console.error("Please fill all Data");
     } else {
       console.log(formData);
+      setState(false)
+      setVal(formData)
+
     }
   };
   const handleReset = () => {
     setFormData({ firstname: "", lastname: "", email: "", gender: "" });
   };
   return (
-    <div>
-      <h2>Controlled Forms</h2>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <div>
-          <label>First Name : </label>
-          <input
-            type="text"
-            name="firstname"
-            value={formData.firstname}
-            onChange={(e) => handleOnChange(e)}
-          />{" "}
-          <br />
-          <span style={{ color: "red" }}>{error.firstname}</span>
-        </div>
-        <div>
-          <label>Last Name : </label>
-          <input
-            type="text"
-            name="lastname"
-            value={formData.lastname}
-            onChange={(e) => handleOnChange(e)}
-          />{" "}
-          <br />
-          <span style={{ color: "red" }}>{error.lastname}</span>
-        </div>
-        <div>
-          <label>Email : </label>
-          <input
-            type="text"
-            name="email"
-            value={formData.email}
-            onChange={(e) => handleOnChange(e)}
-          />{" "}
-          <br />
-          <span style={{ color: "red" }}>{error.email}</span>
-        </div>
-        <div>
-          <label>Gender :</label>
-          <input
-            type="radio"
-            name="gender"
-            value="male"
-            onChange={(e) => handleOnChange(e)}
-          />
-          Male
-          <input
-            type="radio"
-            name="gender"
-            value="female"
-            onChange={(e) => handleOnChange(e)}
-          />
-          Female
-        </div>{" "}
-        <br />
-        <span style={{ color: "red" }}>{error.gender}</span>
-        <div>
-          <label>Courses : </label>
-          <select name="course" onChange={(e) => handleOnChange(e)}>
-            <option>React</option>
-            <option>Node</option>
-            <option>Java</option>
-            <option>Mongo</option>
-          </select>
-        </div>
-        <input type="submit" value="Submit" />
-        <input type="button" value="Reset" onClick={handleReset} />
-      </form>
-    </div>
+    <>
+      <div className="contain">
+        <h2>Controlled Forms</h2>
+        {state?<span className="error">Fill all the fields</span>:null}
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <table>
+            <tbody>
+              <tr>
+                <td>First Name </td>
+                <td>
+                  <input
+                    type="text"
+                    name="firstname"
+                    value={formData.firstname}
+                    onChange={(e) => handleOnChange(e)}
+                    className="type-text"
+                  /> <br />
+                  <span className="error">{error.firstname}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Last Name </td>
+                <td>
+                  <input
+                    type="text"
+                    name="lastname"
+                    value={formData.lastname}
+                    onChange={(e) => handleOnChange(e)}
+                    className="type-text"
+                  /><br />
+                  <span className="error">{error.lastname}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Email ID </td>
+                <input
+                  type="text"
+                  name="email"
+                  value={formData.email}
+                  onChange={(e) => handleOnChange(e)}
+                  className="type-text"
+                /> <br />
+                <span className="error">{error.email}</span>
+              </tr>
+              <tr>
+                <td>Gender </td>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  onChange={(e) => handleOnChange(e)}
+                  className='type-radio'
+                />
+                Male
+                <input
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  onChange={(e) => handleOnChange(e)}
+                  className='type-radio'
+                />
+                Female
+              </tr>
+              <span style={{ color: "red" }}>{error.gender}</span>
+              <tr>
+                <td>Courses </td>
+                <select name="course" className="type-text" onChange={(e) => handleOnChange(e)}>
+                  <option>React</option>
+                  <option>Node</option>
+                  <option>Java</option>
+                  <option>Mongo</option>
+                </select>
+              </tr>
+              <tr>
+                <td>
+                  <input className="sub-btn" type="submit" value="Submit" />
+                </td>
+                <td>
+                  <input className="sub-btn" type="button" value="Reset" onClick={handleReset} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      {JSON.stringify(val)}
+      </div>
+    </>
   );
 }
 
